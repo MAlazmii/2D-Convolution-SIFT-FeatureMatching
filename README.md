@@ -31,19 +31,18 @@ python -m pip install jupyter numpy matplotlib opencv-python
 
 Place `victoria1.jpg` and `victoria2.jpg` beside the notebooks. **The original JPEG files are not included in this repository.** You can use your own image pair by updating the filenames in the cells, but the resulting figures and match counts will differ.
 
-Open the notebooks with Jupyter. The second notebook assumes imports already exist in the kernel; add this cell before running it independently:
+Open the notebooks with Jupyter and run all cells in order. Both now import their dependencies explicitly and use the tested helpers in `vision_utils.py`. Missing photographs produce a clear file error.
 
-```python
-import cv2
-import matplotlib.pyplot as plt
+## Implementation and validation
+
+- Custom convolution flips the kernel, applies zero padding, and retains signed floating-point responses. This fixes integer wrapping and computes border responses explicitly.
+- Image resizing uses width correctly and preserves aspect ratios.
+- SIFT descriptors use L2 distance; binary ORB descriptors use Hamming distance. Missing descriptors and fewer than two candidate neighbors yield no ratio-test matches.
+- Historical outputs above were produced by the earlier coursework code. The notebooks' code outputs were cleared when their processing changed; they must be rerun with images to generate corresponding current results. The original discussion is labelled historical.
+
+```sh
+python -m pip install -r requirements-dev.txt
+python -m pytest --rootdir=. tests
 ```
 
-Dependency versions are not pinned, and these installation instructions have not been validated by rerunning the notebooks.
-
-## Implementation notes
-
-- The custom filter leaves border pixels at zero, does not flip the kernel, and stores output in the input image's integer dtype. It illustrates local filtering but is not a general, numerically robust convolution implementation.
-- The matching code uses one default `BFMatcher` for both methods. ORB's binary descriptors should be evaluated with a Hamming-distance matcher before drawing comparative conclusions.
-- The image-resizing code assigns `shape[:2]` to variables named width and height in reversed order; check image dimensions before using this as a reusable pipeline.
-
-This is an exploratory coursework implementation with saved visual examples. Source and existing outputs were inspected for this documentation update; the image-processing code was not rerun.
+The tests use generated inputs to check signed convolution, border behavior, aspect ratios, descriptor distance selection, missing input, and featureless images. The original photographs were unavailable, so the historical comparison was not reproduced and no new SIFT-versus-ORB accuracy claim is made.

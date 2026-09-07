@@ -1,0 +1,7 @@
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+/victoria1.jpg
+/victoria2.jpg
+.DS_Store
