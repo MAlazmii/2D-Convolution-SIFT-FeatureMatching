@@ -46,3 +46,7 @@ python -m pytest --rootdir=. tests
 ```
 
 The tests use generated inputs to check signed convolution, border behavior, aspect ratios, descriptor distance selection, missing input, and featureless images. The original photographs were unavailable, so the historical comparison was not reproduced and no new SIFT-versus-ORB accuracy claim is made.
+
+## Automated checks
+
+GitHub Actions runs these generated-input tests with Python 3.11 and headless Matplotlib on pushes and pull requests. The workflow does not execute the notebooks or reproduce the historical photograph-matching result because the original JPEG inputs are unavailable.
